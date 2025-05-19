@@ -1,7 +1,6 @@
---[[ Cathub Script by Alchemist185 ]]
+--[[ Cathub Script by Alchemist185 | Optimized Version ]]
 if not game:IsLoaded() then game.Loaded:Wait() end
 
--- Rayfield UI Load
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local Window = Rayfield:CreateWindow({
@@ -23,12 +22,11 @@ local Window = Rayfield:CreateWindow({
 
 Rayfield:Notify({
 	Title = "Cathub Loaded",
-	Content = "Welcome to Cathub",
+	Content = "Welcome to cathub",
 	Duration = 4,
 	Image = "https://i.imgur.com/qTv5vHS.jpeg"
 })
 
--- Prompt to Join Discord
 Rayfield:Prompt({
 	Title = "Join our Discord?",
 	Content = "Would you like to join Cathub Discord?",
@@ -45,8 +43,19 @@ Rayfield:Prompt({
 
 -- Settings Tab
 local Settings = Window:CreateTab("Settings", 4483362458)
-Settings:CreateColorPicker({Name = "UI Accent Color", Callback = function(color) Rayfield:SetTheme({Accent = color}) end})
-Settings:CreateToggle({Name = "Draggable UI", CurrentValue = true, Callback = function(v) game:GetService("StarterGui"):SetCore("DevConsoleVisible", not v) end})
+Settings:CreateColorPicker({
+	Name = "UI Accent Color",
+	Callback = function(color)
+		Rayfield:SetTheme({Accent = color})
+	end
+})
+Settings:CreateToggle({
+	Name = "Draggable UI",
+	CurrentValue = true,
+	Callback = function(v)
+		game:GetService("StarterGui"):SetCore("DevConsoleVisible", not v)
+	end
+})
 
 -- Main Tab
 local Main = Window:CreateTab("Main", 4483362458)
@@ -54,71 +63,81 @@ local Main = Window:CreateTab("Main", 4483362458)
 Main:CreateButton({
 	Name = "Teleport to End (80km)",
 	Callback = function()
-		local player = game.Players.LocalPlayer
-		local char = player.Character or player.CharacterAdded:Wait()
-		char:MoveTo(Vector3.new(80000, 25, 0))
-		wait(0.5)
-		loadstring(game:HttpGet("https://pastebin.com/raw/NCnK8bPf"))()
+		pcall(function()
+			local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+			char:MoveTo(Vector3.new(80000, 25, 0))
+			wait(0.5)
+			loadstring(game:HttpGet("https://pastebin.com/raw/NCnK8bPf"))()
+		end)
 	end,
 })
 
 Main:CreateButton({
 	Name = "Teleport to Tesla Lab",
 	Callback = function()
-		local pos = Vector3.new(4250, 15, -240)
-		game.Players.LocalPlayer.Character:MoveTo(pos)
+		pcall(function()
+			game.Players.LocalPlayer.Character:MoveTo(Vector3.new(4250, 15, -240))
+		end)
 	end,
 })
 
 Main:CreateButton({
-	Name = "Teleport to Castle",
+	Name = "Teleport to Castle Roof",
 	Callback = function()
-		game.Players.LocalPlayer.Character:MoveTo(Vector3.new(6125, 85, -1420))
-		Rayfield:Notify({Title="Teleported", Content="Wait to avoid vampires/werewolves", Duration=5})
+		pcall(function()
+			game.Players.LocalPlayer.Character:MoveTo(Vector3.new(6125, 85, -1420))
+			Rayfield:Notify({Title="Teleported", Content="Wait to avoid vampires/werewolves", Duration=5})
+		end)
 	end,
 })
 
 Main:CreateButton({
 	Name = "Teleport to Sterling",
 	Callback = function()
-		game.Players.LocalPlayer.Character:MoveTo(Vector3.new(12000, 25, 500))
-		Rayfield:Notify({Title="Teleported", Content="Sterling Village Front", Duration=4})
+		pcall(function()
+			game.Players.LocalPlayer.Character:MoveTo(Vector3.new(12000, 25, 500))
+			Rayfield:Notify({Title="Teleported", Content="Sterling Village Front", Duration=4})
+		end)
 	end,
 })
 
 Main:CreateButton({
 	Name = "Fly Toggle",
 	Callback = function()
-		loadstring(game:HttpGet("https://pastebin.com/raw/5HF3xZ1b"))()
+		pcall(function()
+			loadstring(game:HttpGet("https://pastebin.com/raw/5HF3xZ1b"))()
+		end)
 	end,
 })
 
 Main:CreateButton({
 	Name = "Auto Bond Collector",
 	Callback = function()
-		Rayfield:Notify({Title="Auto Bond", Content="Running. Don't touch anything.", Duration=4})
-		local collected = 0
-		local function scan()
+		pcall(function()
+			Rayfield:Notify({Title="Auto Bond", Content="Running. Don't touch anything.", Duration=4})
+			local collected = 0
 			for _, obj in pairs(workspace:GetDescendants()) do
 				if obj.Name == "Bond" and obj:IsA("Part") then
 					game.Players.LocalPlayer.Character:MoveTo(obj.Position)
-					wait(0.3)
+					task.wait(0.3)
 					collected += 1
 				end
 			end
 			Rayfield:Notify({Title="Scan Complete", Content="Collected "..collected.." bonds", Duration=4})
-		end
-		scan()
+		end)
 	end,
 })
 
 -- Visual Tab
 local Visual = Window:CreateTab("Visual", 4483362458)
+
 Visual:CreateToggle({
 	Name = "Night Vision",
 	CurrentValue = false,
 	Callback = function(v)
-		game.Lighting.Brightness = v and 5 or 1
+		pcall(function()
+			game.Lighting.Brightness = v and 5 or 1
+		end)
 	end,
 })
 
@@ -128,7 +147,9 @@ Visual:CreateSlider({
 	Increment = 5,
 	CurrentValue = 70,
 	Callback = function(v)
-		game.Players.LocalPlayer.CameraMaxZoomDistance = v
+		pcall(function()
+			game.Players.LocalPlayer.CameraMaxZoomDistance = v
+		end)
 	end,
 })
 
@@ -143,7 +164,9 @@ Humanoid:CreateSlider({
 	Increment = 1,
 	CurrentValue = 16,
 	Callback = function(v)
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+		pcall(function()
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+		end)
 	end,
 })
 
@@ -153,7 +176,9 @@ Humanoid:CreateSlider({
 	Increment = 5,
 	CurrentValue = 50,
 	Callback = function(v)
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = v
+		pcall(function()
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = v
+		end)
 	end,
 })
 
@@ -162,19 +187,22 @@ Humanoid:CreateToggle({
 	CurrentValue = false,
 	Callback = function(v)
 		local RunService = game:GetService("RunService")
+		_G.noclip = v
 		if v then
-			_G.noclip = true
-			RunService.Stepped:Connect(function()
-				if _G.noclip then
+			if not _G.noclipConnection then
+				_G.noclipConnection = RunService.Stepped:Connect(function()
 					for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
 						if part:IsA("BasePart") and part.CanCollide then
 							part.CanCollide = false
 						end
 					end
-				end
-			end)
+				end)
+			end
 		else
-			_G.noclip = false
+			if _G.noclipConnection then
+				_G.noclipConnection:Disconnect()
+				_G.noclipConnection = nil
+			end
 		end
 	end,
 })
@@ -202,7 +230,7 @@ Aimbot:CreateDropdown({
 	end,
 })
 
--- Webhook Log (Optional anti-crack/user detection)
+-- Webhook Log (Optional)
 pcall(function()
 	local http = game:GetService("HttpService")
 	local user = game.Players.LocalPlayer.Name
