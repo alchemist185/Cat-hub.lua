@@ -1,2 +1,4 @@
-# Cat-hub.lua
-Cathub.lua
+unsupported executors
+solara
+wave
+disord.gg/ringta
