@@ -7,7 +7,7 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local Window = Rayfield:CreateWindow({
 	Name = "Cathub | Dead Rails",
 	LoadingTitle = "Cathub",
-	LoadingSubtitle = "by Alchemist185",
+	LoadingSubtitle = "by Alchemist",
 	ConfigurationSaving = {
 		Enabled = true,
 		FolderName = "CathubData",
@@ -23,7 +23,7 @@ local Window = Rayfield:CreateWindow({
 
 Rayfield:Notify({
 	Title = "Cathub Loaded",
-	Content = "Welcome to Dead Rails",
+	Content = "Welcome to Cathub",
 	Duration = 4,
 	Image = "https://i.imgur.com/qTv5vHS.jpeg"
 })
@@ -56,22 +56,22 @@ Main:CreateButton({
 	Callback = function()
 		local player = game.Players.LocalPlayer
 		local char = player.Character or player.CharacterAdded:Wait()
-		char:MoveTo(Vector3.new(80000, 25, 0)) -- adjust Y/Z if needed
+		char:MoveTo(Vector3.new(80000, 25, 0))
 		wait(0.5)
-		loadstring(game:HttpGet("https://pastebin.com/raw/NCnK8bPf"))() -- Noclip loader
+		loadstring(game:HttpGet("https://pastebin.com/raw/NCnK8bPf"))()
 	end,
 })
 
 Main:CreateButton({
 	Name = "Teleport to Tesla Lab",
 	Callback = function()
-		local pos = Vector3.new(4250, 15, -240) -- estimated location
+		local pos = Vector3.new(4250, 15, -240)
 		game.Players.LocalPlayer.Character:MoveTo(pos)
 	end,
 })
 
 Main:CreateButton({
-	Name = "Teleport to Castle Roof",
+	Name = "Teleport to Castle",
 	Callback = function()
 		game.Players.LocalPlayer.Character:MoveTo(Vector3.new(6125, 85, -1420))
 		Rayfield:Notify({Title="Teleported", Content="Wait to avoid vampires/werewolves", Duration=5})
