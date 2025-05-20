@@ -1,98 +1,94 @@
---[[
-  CatHub Script - Custom UI, Auto Bond, Teleports, and More
-  Place Locked: 70876832253163
-  Key System: "no no no" (Join owner's Discord server for access)
-  Features:
-    • Custom Rayfield-like UI (not using Rayfield)
-    • Tabs: Main, Humanoid, Visual, Aimbot, Settings
-    • Loading animation with logo (ID: 13333189503)
-    • Key input prompt: "Enter the key"
-    • Auto Bond Collector: Teleports to all houses, banks, labs, caves, etc.
-    • Teleports: Town of Sterling, Train, Castle, Tesla Lab, Dead Rails, Outposts (10km to 70km), End Bridge (80km)
-    • Noclip toggle with ✓ box (auto-enabled at end)
-    • Fly: Teleports to nearest non-train chair, executes fly script
-    • Aimbot + Silent Aim with smart targeting
-    • Full UI customization and secure logic
---]]
+???
+print("[CatHub] Key System Loaded. UI inspired by Rayfield but fully custom.")
 
-local placeId = game.PlaceId
-if tostring(placeId) ~= "70876832253163" then
-    return
-end
-
+--// Services
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local TeleportService = game:GetService("TeleportService")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local CoreGui = game:GetService("CoreGui")
-local HttpService = game:GetService("HttpService")
+local Player = Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
-local StarterGui = game:GetService("StarterGui")
+local UserInputService = game:GetService("UserInputService")
 
---// Logo ID
-local logoId = "rbxassetid://13333189503"
+--// UI Setup
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "CatHubKeyUI"
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- UI + Key System Initialization
-local function createLoading()
-    -- Simple loading screen
-    local screenGui = Instance.new("ScreenGui", CoreGui)
-    screenGui.Name = "CatHubLoading"
+-- Draggable frame
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 400, 0, 200)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -100)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Active = true
+MainFrame.Draggable = true
 
-    local frame = Instance.new("Frame", screenGui)
-    frame.Size = UDim2.new(0, 200, 0, 200)
-    frame.Position = UDim2.new(0.5, -100, 0.5, -100)
-    frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    frame.BorderSizePixel = 0
+-- Rounded corners
+local UICorner = Instance.new("UICorner", MainFrame)
+UICorner.CornerRadius = UDim.new(0, 10)
 
-    local logo = Instance.new("ImageLabel", frame)
-    logo.Image = logoId
-    logo.Size = UDim2.new(0, 128, 0, 128)
-    logo.Position = UDim2.new(0.5, -64, 0.5, -64)
-    logo.BackgroundTransparency = 1
+-- Title
+local Title = Instance.new("TextLabel", MainFrame)
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundTransparency = 1
+Title.Text = "CatHub - Enter Key"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 20
 
-    wait(2)
-    screenGui:Destroy()
-end
+-- Input Box
+local KeyBox = Instance.new("TextBox", MainFrame)
+KeyBox.Position = UDim2.new(0.5, -150, 0.5, -10)
+KeyBox.Size = UDim2.new(0, 300, 0, 30)
+KeyBox.PlaceholderText = "Enter the key"
+KeyBox.Text = ""
+KeyBox.Font = Enum.Font.Gotham
+KeyBox.TextSize = 16
+KeyBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+KeyBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 
-createLoading()
+local UICorner2 = Instance.new("UICorner", KeyBox)
+UICorner2.CornerRadius = UDim.new(0, 6)
 
--- Key Prompt
-local function requestKey()
-    local key = "Meow:3"
-    local input = ""
-    repeat
-        input = tostring(game:GetService("StarterGui"):PromptInput("Enter the key"))
-        wait()
-    until input == key
-end
+-- Confirm Button
+local Confirm = Instance.new("TextButton", MainFrame)
+Confirm.Position = UDim2.new(0.5, -75, 1, -50)
+Confirm.Size = UDim2.new(0, 150, 0, 30)
+Confirm.Text = "Submit"
+Confirm.Font = Enum.Font.GothamBold
+Confirm.TextSize = 16
+Confirm.TextColor3 = Color3.fromRGB(255, 255, 255)
+Confirm.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 
--- Fallback Input Prompt Function
-function StarterGui:PromptInput(prompt)
-    local value = ""
-    local promptGui = Instance.new("ScreenGui", CoreGui)
-    promptGui.Name = "KeyPrompt"
+local UICorner3 = Instance.new("UICorner", Confirm)
+UICorner3.CornerRadius = UDim.new(0, 6)
 
-    local box = Instance.new("TextBox", promptGui)
-    box.PlaceholderText = prompt
-    box.Size = UDim2.new(0, 300, 0, 50)
-    box.Position = UDim2.new(0.5, -150, 0.5, -25)
-    box.TextScaled = true
-    box.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    box.TextColor3 = Color3.fromRGB(255, 255, 255)
-    box.ClearTextOnFocus = false
-    box.Text = ""
+-- Close Button
+local Close = Instance.new("TextButton", MainFrame)
+Close.Size = UDim2.new(0, 30, 0, 30)
+Close.Position = UDim2.new(1, -35, 0, 5)
+Close.Text = "X"
+Close.Font = Enum.Font.GothamBold
+Close.TextSize = 14
+Close.TextColor3 = Color3.fromRGB(255, 100, 100)
+Close.BackgroundTransparency = 1
 
-    box.FocusLost:Connect(function()
-        value = box.Text
-        promptGui:Destroy()
-    end)
+-- Actions
+Close.MouseButton1Click:Connect(function()
+	MainFrame:Destroy()
+end)
 
-    repeat wait() until value ~= ""
-    return value
-end
+local ValidKey = "Meow:3"
 
-requestKey()
-
--- After key is entered
-loadstring(game:HttpGet("https://raw.githubusercontent.com/alchemist185/Cat-hub.lua/main/cathub_main.lua"))()
+Confirm.MouseButton1Click:Connect(function()
+	if KeyBox.Text == ValidKey then
+		Title.Text = "Loading CatHub..."
+		Confirm.Text = "Valid Key!"
+		wait(1)
+		ScreenGui:Destroy()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/alchemist185/cathub.main/refs/heads/main/%3F%3F"))()
+	else
+		Title.Text = "Invalid Key"
+		wait(1)
+		Title.Text = "CatHub - Enter Key"
+	end
+end)
