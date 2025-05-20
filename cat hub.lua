@@ -1,7 +1,7 @@
 --[[
   CatHub Script - Custom UI, Auto Bond, Teleports, and More
   Place Locked: 70876832253163
-  Key System: "Meow:3" (Join owner's Discord server for access)
+  Key System: "no no no" (Join owner's Discord server for access)
   Features:
     • Custom Rayfield-like UI (not using Rayfield)
     • Tabs: Main, Humanoid, Visual, Aimbot, Settings
