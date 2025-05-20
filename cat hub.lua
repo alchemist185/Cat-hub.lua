@@ -95,4 +95,4 @@ end
 requestKey()
 
 -- After key is entered
-loadstring(game:HttpGethttps://raw.githubusercontent.com/alchemist185/Cat-hub.lua/main/cathub_main.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/alchemist185/Cat-hub.lua/main/cathub_main.lua"))()
